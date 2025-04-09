@@ -1,0 +1,415 @@
+/* 现代化样式 - 为年轻用户优化的UI */
+:root {
+  /* 主色调 */
+  --primary-color: #4361ee;
+  --primary-light: #4895ef;
+  --primary-dark: #3f37c9;
+  
+  /* 玩家颜色 - 更鲜艳现代的色调 */
+  --player-red: #ff4d6d;
+  --player-blue: #4cc9f0;
+  --player-yellow: #ffd166;
+  --player-green: #06d6a0;
+  
+  /* 中性色 */
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-primary: #212529;
+  --text-secondary: #6c757d;
+  --border-color: #dee2e6;
+  
+  /* 功能色 */
+  --success: #38b000;
+  --warning: #ffd166;
+  --error: #ef476f;
+  --info: #4cc9f0;
+  
+  /* 尺寸 */
+  --border-radius: 12px;
+  --border-radius-sm: 8px;
+  --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  
+  /* 字体 */
+  --font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* 全局样式 */
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+/* 容器样式 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 卡片样式 */
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+/* 按钮样式 */
+.btn {
+  display: inline-block;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  line-height: 1.5;
+  border-radius: var(--border-radius-sm);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+  background-color: var(--text-secondary);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+.btn-success {
+  background-color: var(--success);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #2d9300;
+}
+
+/* 表单元素 */
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--card-bg);
+  background-clip: padding-box;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: var(--primary-light);
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+}
+
+/* 标题样式 */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+/* 游戏大厅样式 */
+#lobby, #waitingRoom {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 32px;
+  max-width: 900px;
+  margin: 40px auto;
+}
+
+.lobby-container, .waiting-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.player-info, .room-list-container {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* 颜色选择器 */
+.color-selection {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.color-option {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.color-option:hover {
+  transform: scale(1.1);
+}
+
+.color-option.selected {
+  border-color: var(--text-primary);
+  transform: scale(1.1);
+}
+
+.color-option.red {
+  background-color: var(--player-red);
+}
+
+.color-option.blue {
+  background-color: var(--player-blue);
+}
+
+.color-option.yellow {
+  background-color: var(--player-yellow);
+}
+
+.color-option.green {
+  background-color: var(--player-green);
+}
+
+/* 房间列表 */
+.room-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.room-controls input {
+  flex: 1;
+}
+
+.room-list {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  padding: 0;
+}
+
+.room-item {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.room-item:hover {
+  background-color: rgba(67, 97, 238, 0.05);
+}
+
+.room-item:last-child {
+  border-bottom: none;
+}
+
+/* 玩家列表 */
+.players-list {
+  width: 100%;
+  margin: 24px 0;
+}
+
+.player-item {
+  padding: 16px;
+  margin-bottom: 8px;
+  border-radius: var(--border-radius-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  font-weight: 500;
+}
+
+.player-ready {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+/* 游戏主界面 */
+.main {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+}
+
+/* 骰子样式 */
+.dice {
+  transform: scale(1.2);
+  transition: transform 0.3s ease;
+}
+
+.dice:hover {
+  transform: scale(1.3);
+}
+
+/* 玩家指示器 */
+.player-indicators {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: var(--border-radius-sm);
+  padding: 12px;
+  box-shadow: var(--box-shadow);
+}
+
+.player-indicator {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  margin: 6px;
+  border: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.player-indicator.active {
+  border-color: white;
+  box-shadow: 0 0 0 2px var(--text-primary);
+  transform: scale(1.1);
+}
+
+/* 回合通知 */
+#turnNotification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(33, 37, 41, 0.85);
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--border-radius-sm);
+  font-weight: 600;
+  z-index: 9999;
+  text-align: center;
+  box-shadow: var(--box-shadow);
+  backdrop-filter: blur(4px);
+}
+
+/* 语言选择器 */
+.language-selector {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  gap: 8px;
+}
+
+.language-btn {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.language-btn:hover {
+  background-color: var(--primary-light);
+  color: white;
+}
+
+.language-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .lobby-container, .waiting-container {
+    flex-direction: column;
+  }
+  
+  .player-info, .room-list-container {
+    width: 100%;
+  }
+  
+  .room-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .room-controls input, .room-controls button {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  
+  .main {
+    transform: scale(0.9);
+    transform-origin: top center;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* 动画效果 */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.pulse {
+  animation: pulse 1.5s infinite;
+}

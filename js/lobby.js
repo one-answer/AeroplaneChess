@@ -8,6 +8,12 @@ function showLobby() {
     $j('.main').hide();
     $j('.option').hide();
 
+    // Initialize i18n if available
+    if (window.i18n) {
+        window.i18n.initLanguage();
+        window.i18n.addLanguageSelector();
+    }
+
     // Show lobby if it exists, otherwise create it
     if ($j('#lobby').length) {
         $j('#lobby').show();
@@ -21,53 +27,61 @@ function showLobby() {
     } else {
         refreshRoomList();
     }
+
+    // Update all texts with translations
+    if (window.i18n) {
+        window.i18n.updatePageTexts();
+    }
 }
 
 // Create the lobby UI
 function createLobbyUI() {
+    // Get translations function if available
+    const t = window.i18n ? window.i18n.t : (key) => key;
+
     var lobbyHtml = `
-        <div id="lobby">
-            <h1>飞行棋 Online</h1>
+        <div id="lobby" class="card">
+            <h1 data-i18n="appTitle">${t('appTitle')}</h1>
             <div class="lobby-container">
-                <div class="player-info">
-                    <h2>Player Information</h2>
+                <div class="player-info card">
+                    <h2 data-i18n="playerInfo">${t('playerInfo')}</h2>
                     <div class="form-group">
-                        <label for="playerName">Your Name:</label>
-                        <input type="text" id="playerName" placeholder="Enter your name">
+                        <label for="playerName" data-i18n="yourName">${t('yourName')}</label>
+                        <input type="text" id="playerName" class="form-control" data-i18n-placeholder="yourName" placeholder="${t('yourName')}">
                     </div>
                     <div class="form-group">
-                        <label>Select Color:</label>
+                        <label data-i18n="selectColor">${t('selectColor')}</label>
                         <div class="color-selection">
-                            <div class="color-option red" data-color="red"></div>
-                            <div class="color-option blue" data-color="blue"></div>
-                            <div class="color-option yellow" data-color="yellow"></div>
-                            <div class="color-option green" data-color="green"></div>
+                            <div class="color-option red" data-color="red" title="${t('red')}"></div>
+                            <div class="color-option blue" data-color="blue" title="${t('blue')}"></div>
+                            <div class="color-option yellow" data-color="yellow" title="${t('yellow')}"></div>
+                            <div class="color-option green" data-color="green" title="${t('green')}"></div>
                         </div>
                     </div>
                 </div>
 
-                <div class="room-list-container">
-                    <h2>Game Rooms</h2>
+                <div class="room-list-container card">
+                    <h2 data-i18n="gameRooms">${t('gameRooms')}</h2>
                     <div class="room-controls">
-                        <input type="text" id="roomName" placeholder="Room name">
-                        <button id="createRoomBtn">Create Room</button>
-                        <button id="refreshRoomsBtn">Refresh</button>
+                        <input type="text" id="roomName" class="form-control" data-i18n-placeholder="roomName" placeholder="${t('roomName')}">
+                        <button id="createRoomBtn" class="btn btn-primary" data-i18n="createRoom" title="${t('createRoomTip')}">${t('createRoom')}</button>
+                        <button id="refreshRoomsBtn" class="btn btn-secondary" data-i18n="refresh" title="${t('refreshTip')}">${t('refresh')}</button>
                     </div>
                     <div id="roomList" class="room-list">
-                        <p>Loading rooms...</p>
+                        <p data-i18n="loading">${t('loading')}</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="waitingRoom" style="display:none;">
-            <h1>Waiting Room</h1>
+        <div id="waitingRoom" class="card" style="display:none;">
+            <h1 data-i18n="waitingRoom">${t('waitingRoom')}</h1>
             <div class="waiting-container">
                 <h2 id="roomNameDisplay"></h2>
                 <div id="playersList" class="players-list"></div>
                 <div class="waiting-controls">
-                    <button id="readyButton">Ready</button>
-                    <button id="leaveRoomButton">Leave Room</button>
+                    <button id="readyButton" class="btn btn-success" data-i18n="ready" title="${t('readyTip')}">${t('ready')}</button>
+                    <button id="leaveRoomButton" class="btn btn-secondary" data-i18n="leaveRoom" title="${t('leaveRoomTip')}">${t('leaveRoom')}</button>
                 </div>
             </div>
         </div>
@@ -249,16 +263,19 @@ function createLobbyUI() {
 
 // Display the list of available rooms
 function displayRoomList(rooms) {
+    // Get translations function if available
+    const t = window.i18n ? window.i18n.t : (key) => key;
+
     var roomListHtml = '';
 
     if (rooms.length === 0) {
-        roomListHtml = '<p>No rooms available. Create one!</p>';
+        roomListHtml = `<p data-i18n="noRooms">${t('noRooms')}</p>`;
     } else {
         rooms.forEach(function(room) {
             roomListHtml += `
                 <div class="room-item" data-room-id="${room.id}">
                     <div><strong>${room.name}</strong></div>
-                    <div>Players: ${room.players}/${room.maxPlayers}</div>
+                    <div data-i18n-players>${t('players')}: ${room.players}/${room.maxPlayers}</div>
                 </div>
             `;
         });
@@ -272,26 +289,45 @@ function displayRoomList(rooms) {
         var name = $j('#playerName').val();
         var color = playerColor;
 
+        // Validate inputs
+        if (!name) {
+            alert(t('nameRequired'));
+            return;
+        }
+
+        if (!color) {
+            alert(t('colorRequired'));
+            return;
+        }
+
         joinRoom(roomId, name, color);
     });
 }
 
 // Show the waiting room after joining a room
 function showWaitingRoom(players) {
+    // Get translations function if available
+    const t = window.i18n ? window.i18n.t : (key) => key;
+
     $j('#lobby').hide();
     $j('#waitingRoom').show();
-    $j('#roomNameDisplay').text('Room: ' + currentRoom);
+    $j('#roomNameDisplay').text(`${t('room')}: ${currentRoom}`);
 
     updateWaitingRoom(players);
 }
 
 // Update the waiting room player list
 function updateWaitingRoom(players) {
+    // Get translations function if available
+    const t = window.i18n ? window.i18n.t : (key) => key;
+
     var playersListHtml = '';
 
     Object.entries(players).forEach(function([playerId, player]) {
-        var colorStyle = `background-color: ${player.color}; color: white;`;
-        var readyStatus = player.ready ? '<span class="player-ready">Ready</span>' : 'Not Ready';
+        var colorStyle = `background-color: var(--player-${player.color}, ${player.color}); color: white;`;
+        var readyStatus = player.ready ?
+            `<span class="player-ready" data-i18n="ready">${t('ready')}</span>` :
+            `<span data-i18n="notReady">${t('notReady')}</span>`;
 
         playersListHtml += `
             <div class="player-item" style="${colorStyle}">
@@ -306,6 +342,9 @@ function updateWaitingRoom(players) {
 
 // Start the game
 function startGame(gameState) {
+    // Get translations function if available
+    const t = window.i18n ? window.i18n.t : (key) => key;
+
     $j('#waitingRoom').hide();
     $j('.main').show();
 
@@ -320,38 +359,21 @@ function startGame(gameState) {
     if (!$j('.player-indicators').length) {
         var indicatorsHtml = '<div class="player-indicators">';
         gameState.userList.forEach(function(user) {
-            indicatorsHtml += `<div class="player-indicator ${user.color}" style="background-color: ${user.color};"></div>`;
+            // Get color name for title attribute
+            const colorName = t(user.color);
+            indicatorsHtml += `<div class="player-indicator ${user.color}" style="background-color: var(--player-${user.color}, ${user.color});" title="${colorName}"></div>`;
         });
         indicatorsHtml += '</div>';
 
         $j('.main').append(indicatorsHtml);
-
-        // Style the indicators
-        $j('.player-indicators').css({
-            'position': 'absolute',
-            'top': '10px',
-            'right': '10px',
-            'display': 'flex',
-            'flex-direction': 'column',
-            'z-index': '100'
-        });
-
-        $j('.player-indicator').css({
-            'width': '30px',
-            'height': '30px',
-            'border-radius': '50%',
-            'margin': '5px',
-            'border': '2px solid transparent',
-            'transition': 'all 0.3s ease'
-        });
     }
 
     // Create planes for all players
     createPlane(planeOption.userList);
 
     // Set initial turn status
-    $j(".showdicenum").text('等待'); // All players waiting initially
-    $j("#sdn" + planeOption.currentUser).text('请投骰'); // Current player's turn
+    $j(".showdicenum").text(t('waiting')); // All players waiting initially
+    $j("#sdn" + planeOption.currentUser).text(t('rollDice')); // Current player's turn
 
     // If it's this player's turn, enable the dice
     if (playerColor === planeOption.currentUser) {
@@ -359,7 +381,10 @@ function startGame(gameState) {
         addDiceEvent();
         // Highlight current player's indicator
         $j('.player-indicator').removeClass('active');
-        $j('.player-indicator.' + playerColor).addClass('active').css('border-color', 'white');
+        $j('.player-indicator.' + playerColor).addClass('active');
+
+        // Add tooltip to dice
+        $j('#dice').attr('title', t('diceRollTip'));
     } else {
         isMyTurn = false;
         $j("#dice").unbind('click').removeClass('pointer');

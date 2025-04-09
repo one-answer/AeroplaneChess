@@ -208,56 +208,47 @@ function startGame(gameState) {
 
 // Show turn notification to all players
 function showTurnNotification(currentPlayer, isContinueTurn) {
+    // Get translations function if available
+    const t = window.i18n ? window.i18n.t : (key) => key;
+
     // Create notification if it doesn't exist
     if (!$j('#turnNotification').length) {
         $j('body').append('<div id="turnNotification"></div>');
-        $j('#turnNotification').css({
-            'position': 'fixed',
-            'top': '10px',
-            'left': '50%',
-            'transform': 'translateX(-50%)',
-            'background-color': 'rgba(0,0,0,0.7)',
-            'color': 'white',
-            'padding': '10px 20px',
-            'border-radius': '5px',
-            'z-index': '9999',
-            'font-weight': 'bold',
-            'text-align': 'center'
-        });
+        // Styles are now in modern.css
     }
 
-    // Set the color of the current player
-    var colorName = '';
-    switch(currentPlayer) {
-        case 'red': colorName = '红色'; break;
-        case 'blue': colorName = '蓝色'; break;
-        case 'yellow': colorName = '黄色'; break;
-        case 'green': colorName = '绿色'; break;
-    }
+    // Get the color name from translations
+    const colorName = t(currentPlayer);
 
     // Show the notification
     if (isContinueTurn) {
         // Special message for continuing turn after rolling a 6
         if (playerColor === currentPlayer) {
-            $j('#turnNotification').text('你投出了6点，可以再次投骰！'); // You rolled a 6, roll again!
-            $j('#turnNotification').css('background-color', 'rgba(0,150,0,0.8)');
+            $j('#turnNotification').text(t('rolledSix'));
+            $j('#turnNotification').css('background-color', 'var(--success, rgba(0,150,0,0.8))');
         } else {
-            $j('#turnNotification').text(colorName + ' 玩家投出了6点，可以再次投骰'); // Player rolled a 6, can roll again
+            $j('#turnNotification').text(t('otherRolledSix', { color: colorName }));
             $j('#turnNotification').css('background-color', 'rgba(0,0,0,0.7)');
         }
     } else {
         // Normal turn notification
-        $j('#turnNotification').text('当前回合: ' + colorName + ' 玩家');
+        $j('#turnNotification').text(t('currentTurn', { color: colorName }));
         $j('#turnNotification').css('background-color', 'rgba(0,0,0,0.7)');
 
         // Highlight if it's the current player's turn
         if (playerColor === currentPlayer) {
-            $j('#turnNotification').css('background-color', 'rgba(0,150,0,0.8)');
-            $j('#turnNotification').text('你的回合!');
+            $j('#turnNotification').css('background-color', 'var(--success, rgba(0,150,0,0.8))');
+            $j('#turnNotification').text(t('yourTurn'));
+
+            // Add pulse animation to the player's indicator
+            $j('.player-indicator.' + playerColor).addClass('pulse');
+        } else {
+            // Remove pulse animation from other indicators
+            $j('.player-indicator').removeClass('pulse');
         }
     }
 
-    // Show the notification
+    // Show the notification with animation
     $j('#turnNotification').fadeIn(300).delay(2000).fadeOut(300);
 }
 

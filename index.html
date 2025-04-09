@@ -2,10 +2,12 @@
 <html>
 <head>
     <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/init.css"/>
     <link rel="stylesheet" href="css/common.css"/>
     <link rel="stylesheet" href="css/index.css"/>
     <link rel="stylesheet" href="css/lobby.css"/>
+    <link rel="stylesheet" href="css/modern.css"/>
     <script type="text/javascript" src="js/Coord.js"></script>
     <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="js/jquery.slotmachine.js"></script>
@@ -13,6 +15,7 @@
         var $j = jQuery.noConflict();
     </script>
     <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="js/i18n.js"></script>
     <script type="text/javascript" src="js/Audio.js"></script>
     <script type="text/javascript" src="js/Option.js"></script>
     <script type="text/javascript" src="js/Rule.js"></script>
@@ -20,7 +23,7 @@
     <script type="text/javascript" src="js/socket-client.js"></script>
     <script type="text/javascript" src="js/lobby.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
-    <title>飞行棋 Online</title>
+    <title data-i18n="appTitle">飞行棋 Online</title>
 </head>
 <body>
 <div class="main" style="display:none;">

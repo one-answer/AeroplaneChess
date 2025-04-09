@@ -407,7 +407,10 @@ function userState(color) {
  */
 function nextUser() {
     nextStep = false;
-    $j("#sdn" + planeOption.currentUser).text('等待');
+    // Get translations function if available
+    const t = window.i18n ? window.i18n.t : (key) => key;
+
+    $j("#sdn" + planeOption.currentUser).text(t('waiting'));
     var computer = false;
     var nextPlayer = '';
 
@@ -444,7 +447,7 @@ function nextUser() {
     } else {
         $j('.shade').hide();
     }
-    $j("#sdn" + planeOption.currentUser).text('请投骰');
+    $j("#sdn" + planeOption.currentUser).text(t('rollDice'));
 
     // In online mode, only enable dice if it's the current player's turn
     if (planeOption.isOnlineMode) {
@@ -482,7 +485,8 @@ $j(function () {
         var n = event.screenX - window.screenLeft;
         var b = n > document.documentElement.scrollWidth - 20;
         if (b && event.clientY < 0 || event.altKey) {
-            return "确定关闭吗";
+            const t = window.i18n ? window.i18n.t : (key) => key;
+            return t('confirmClose');
             //event.returnValue = ""; //这里可以放置你想做的操作代码
         }
     };
@@ -490,7 +494,8 @@ $j(function () {
     window.onkeydown = function (e) {
         if (e.which) {
             if (e.which == 116) {
-                if (confirm('确定刷新页面吗？刷新后页面数据将被清除！')) {
+                const t = window.i18n ? window.i18n.t : (key) => key;
+                if (confirm(t('confirmRefresh'))) {
                     return true;
                 } else {
                     return false;
@@ -498,7 +503,8 @@ $j(function () {
             }
         } else if (event.keyCode) {
             if (event.keyCode == 116) {
-                if (confirm('确定刷新页面吗？刷新后页面数据将被清除！')) {
+                const t = window.i18n ? window.i18n.t : (key) => key;
+                if (confirm(t('confirmRefresh'))) {
                     return true;
                 } else {
                     return false;
