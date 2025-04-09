@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+      <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#e9ecef" stroke-width="0.5"/>
+    </pattern>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <rect width="50" height="50" fill="url(#smallGrid)"/>
+      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#dee2e6" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="200" height="200" fill="url(#grid)"/>
+  
+  <!-- Red corner -->
+  <circle cx="50" cy="50" r="20" fill="rgba(255,77,109,0.1)" stroke="#ff4d6d" stroke-width="0.5"/>
+  
+  <!-- Blue corner -->
+  <circle cx="150" cy="50" r="20" fill="rgba(76,201,240,0.1)" stroke="#4cc9f0" stroke-width="0.5"/>
+  
+  <!-- Yellow corner -->
+  <circle cx="150" cy="150" r="20" fill="rgba(255,209,102,0.1)" stroke="#ffd166" stroke-width="0.5"/>
+  
+  <!-- Green corner -->
+  <circle cx="50" cy="150" r="20" fill="rgba(6,214,160,0.1)" stroke="#06d6a0" stroke-width="0.5"/>
+  
+  <!-- Center -->
+  <circle cx="100" cy="100" r="30" fill="none" stroke="#dee2e6" stroke-width="1"/>
+  <circle cx="100" cy="100" r="15" fill="none" stroke="#dee2e6" stroke-width="1"/>
+  
+  <!-- Dice dots pattern -->
+  <g fill="#dee2e6">
+    <circle cx="40" cy="40" r="2"/>
+    <circle cx="60" cy="60" r="2"/>
+    <circle cx="40" cy="60" r="2"/>
+    <circle cx="60" cy="40" r="2"/>
+    
+    <circle cx="140" cy="40" r="2"/>
+    <circle cx="160" cy="60" r="2"/>
+    <circle cx="140" cy="60" r="2"/>
+    <circle cx="160" cy="40" r="2"/>
+    
+    <circle cx="140" cy="140" r="2"/>
+    <circle cx="160" cy="160" r="2"/>
+    <circle cx="140" cy="160" r="2"/>
+    <circle cx="160" cy="140" r="2"/>
+    
+    <circle cx="40" cy="140" r="2"/>
+    <circle cx="60" cy="160" r="2"/>
+    <circle cx="40" cy="160" r="2"/>
+    <circle cx="60" cy="140" r="2"/>
+  </g>
+</svg>

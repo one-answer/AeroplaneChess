@@ -1,0 +1,68 @@
+/* 飞行棋游戏背景样式 */
+
+/* 主背景 - 适用于整个页面 */
+body {
+    background-color: var(--bg-color);
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(var(--player-red-rgb, 255, 77, 109, 0.05)), transparent 400px),
+        radial-gradient(circle at 90% 30%, rgba(var(--player-blue-rgb, 76, 201, 240, 0.05)), transparent 400px),
+        radial-gradient(circle at 80% 90%, rgba(var(--player-yellow-rgb, 255, 209, 102, 0.05)), transparent 400px),
+        radial-gradient(circle at 20% 80%, rgba(var(--player-green-rgb, 6, 214, 160, 0.05)), transparent 400px),
+        url('../img/backgrounds/pattern.svg');
+    background-attachment: fixed;
+    background-size: cover, cover, cover, cover, 200px 200px;
+    background-position: center;
+    transition: background-color 0.3s ease;
+}
+
+/* 暗黑模式下的背景调整 */
+[data-theme="dark"] body {
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(var(--player-red-rgb, 255, 77, 109, 0.1)), transparent 400px),
+        radial-gradient(circle at 90% 30%, rgba(var(--player-blue-rgb, 76, 201, 240, 0.1)), transparent 400px),
+        radial-gradient(circle at 80% 90%, rgba(var(--player-yellow-rgb, 255, 209, 102, 0.1)), transparent 400px),
+        radial-gradient(circle at 20% 80%, rgba(var(--player-green-rgb, 6, 214, 160, 0.1)), transparent 400px),
+        url('../img/backgrounds/pattern-dark.svg');
+}
+
+/* 游戏大厅和等待室背景 */
+#lobby, #waitingRoom {
+    background-image:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.9)),
+        url('../img/backgrounds/board-pattern.svg');
+    background-size: cover, 300px 300px;
+    background-position: center;
+    transition: background-image 0.3s ease;
+}
+
+/* 暗黑模式下的游戏大厅和等待室背景 */
+[data-theme="dark"] #lobby,
+[data-theme="dark"] #waitingRoom {
+    background-image:
+        linear-gradient(135deg, rgba(30, 30, 30, 0.8), rgba(30, 30, 30, 0.95)),
+        url('../img/backgrounds/board-pattern-dark.svg');
+}
+
+/* 游戏主界面背景 */
+.main {
+    background-image: url('../img/backgrounds/game-bg.svg');
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.3s ease;
+}
+
+/* 暗黑模式下的游戏主界面背景 */
+[data-theme="dark"] .main {
+    background-image: url('../img/backgrounds/game-bg-dark.svg');
+}
+
+/* 顶部控制栏背景 */
+.top-controls {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* 暗黑模式下的顶部控制栏背景 */
+[data-theme="dark"] .top-controls {
+    background-color: rgba(30, 30, 30, 0.8);
+}
