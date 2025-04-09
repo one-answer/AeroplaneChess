@@ -9,7 +9,7 @@ var PlaneOption = function () {
     /**
      *
      * @param color /red/blue/yellow/green
-     * @param state /normal/close/win/computer
+     * @param state /normal/close/win/computer/online
      * @constructor
      */
     var PLANEUSER = function (color, state) {
@@ -21,6 +21,7 @@ var PlaneOption = function () {
     this.currentUser = 'red';  //当前用户
     this.backgroundMusic = true;    //背景音乐开关
     this.gameMusic = true;  //游戏音效开关
+    this.isOnlineMode = false;  //是否为在线模式
     /**
      * 设置难度
      */
@@ -83,11 +84,23 @@ var PlaneOption = function () {
      * 开始
      */
     this.begin = function () {
+        if (this.isOnlineMode) {
+            // Online mode is handled by the server
+            return;
+        }
+
         this.setUserList();
         this.setDifficulty();
         createPlane(planeOption.userList);
         $j("#sdn" + planeOption.currentUser).text('请投骰');
         $j('.option').hide();
+    };
+
+    /**
+     * 设置在线模式
+     */
+    this.setOnlineMode = function(isOnline) {
+        this.isOnlineMode = isOnline;
     };
 
     this.tabStyle = function (obj) {

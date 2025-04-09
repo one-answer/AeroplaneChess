@@ -5,21 +5,25 @@
     <link rel="stylesheet" href="css/init.css"/>
     <link rel="stylesheet" href="css/common.css"/>
     <link rel="stylesheet" href="css/index.css"/>
+    <link rel="stylesheet" href="css/lobby.css"/>
     <script type="text/javascript" src="js/Coord.js"></script>
     <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="js/jquery.slotmachine.js"></script>
     <script>
         var $j = jQuery.noConflict();
     </script>
+    <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="js/Audio.js"></script>
     <script type="text/javascript" src="js/Option.js"></script>
     <script type="text/javascript" src="js/Rule.js"></script>
     <script type="text/javascript" src="js/Computer.js"></script>
+    <script type="text/javascript" src="js/socket-client.js"></script>
+    <script type="text/javascript" src="js/lobby.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
-    <title>飞行棋</title>
+    <title>飞行棋 Online</title>
 </head>
 <body>
-<div class="main">
+<div class="main" style="display:none;">
     <div class="dice" id="dice">
         <div class="slot slot1"></div>
         <div class="slot slot2"></div>
@@ -88,5 +92,11 @@
 </div>
 <div class="shade">&nbsp;</div>
 <audio id="yinxiao" src=""></audio>
+    <script>
+        // Initialize the lobby when the page loads
+        $j(document).ready(function() {
+            showLobby();
+        });
+    </script>
 </body>
 </html>

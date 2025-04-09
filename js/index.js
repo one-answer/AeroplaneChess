@@ -2,6 +2,7 @@ var DICE;   //骰子
 var diceNum = 1;    //骰子所得数
 var sixTime = 0;    //连投6的次数
 var nextStep = false;   //是否可以执行下一步
+var isMyTurn = false;   //是否是当前玩家的回合
 
 /**
  * 新建飞机
@@ -89,6 +90,12 @@ function onComplete($el, active) {
         return;
     }
     $j("#sdn" + planeOption.currentUser).text(diceNum);
+
+    // If in online mode, send the dice result to the server
+    if (planeOption.isOnlineMode && currentRoom) {
+        rollDice(diceNum);
+    }
+
     addPlaneEvent(userState(planeOption.currentUser));
 }
 
@@ -156,14 +163,47 @@ function movePlane(obj) {
                 coordId = 39;
                 break;
         }
+
+        // If in online mode, notify the server about the plane movement
+        if (planeOption.isOnlineMode && currentRoom) {
+            movePlane($j(obj).attr('num'), coordId, step);
+        }
         planeAudio.playOutMusic();
         $j(obj).animate({top: unTop, left: unLeft}, 1500, function () {
             $j(obj).attr({'state': 'ready', 'coordId': coordId, 'step': step}).unbind('click').removeClass('pointer');
-            if (diceNum != 6) {
-                nextUser();
-            } else {    //6可连续投骰
-                addDiceEvent();
-                nextStep = true;
+
+            // If in online mode, we need to wait for server confirmation
+            if (planeOption.isOnlineMode) {
+                // Notify server about plane movement completion
+                if (diceNum != 6) {
+                    // If not 6, move to next player
+                    // The turn change will be handled by the server
+                    $j("#dice").unbind('click').removeClass('pointer');
+
+                    // Determine next player
+                    var nextPlayerColor;
+                    switch (planeOption.currentUser) {
+                        case 'red': nextPlayerColor = 'blue'; break;
+                        case 'blue': nextPlayerColor = 'yellow'; break;
+                        case 'yellow': nextPlayerColor = 'green'; break;
+                        case 'green': nextPlayerColor = 'red'; break;
+                    }
+
+                    // Send the turn change to the server
+                    nextTurn(nextPlayerColor);
+                } else {
+                    // If 6, current player can roll again
+                    // Send a special signal to server that player keeps the turn
+                    continueTurn();
+                }
+            } else {
+                // In single player mode, handle turn change locally
+                if (diceNum != 6) {
+                    nextUser();
+                } else {    //6可连续投骰
+                    addDiceEvent();
+                    nextStep = true;
+                }
             }
         });
     } else {
@@ -223,11 +263,38 @@ function movePlane(obj) {
                 }
                 if (flyAttackFlag) {
                     $j(obj).attr({'coordId': coordValue.id, 'step': step}).unbind('click').removeClass('pointer');
-                    if (diceNum != 6) {
-                        nextUser();
-                    } else {    //6可连续投骰
-                        addDiceEvent();
-                        nextStep = true;
+
+                    // If in online mode, we need to wait for server confirmation
+                    if (planeOption.isOnlineMode) {
+                        if (diceNum != 6) {
+                            // If not 6, move to next player
+                            // The turn change will be handled by the server
+                            $j("#dice").unbind('click').removeClass('pointer');
+
+                            // Determine next player
+                            var nextPlayerColor;
+                            switch (planeOption.currentUser) {
+                                case 'red': nextPlayerColor = 'blue'; break;
+                                case 'blue': nextPlayerColor = 'yellow'; break;
+                                case 'yellow': nextPlayerColor = 'green'; break;
+                                case 'green': nextPlayerColor = 'red'; break;
+                            }
+
+                            // Send the turn change to the server
+                            nextTurn(nextPlayerColor);
+                        } else {
+                            // If 6, current player can roll again
+                            // Send a special signal to server that player keeps the turn
+                            continueTurn();
+                        }
+                    } else {
+                        // In single player mode, handle turn change locally
+                        if (diceNum != 6) {
+                            nextUser();
+                        } else {    //6可连续投骰
+                            addDiceEvent();
+                            nextStep = true;
+                        }
                     }
                 }
                 return;
@@ -342,20 +409,30 @@ function nextUser() {
     nextStep = false;
     $j("#sdn" + planeOption.currentUser).text('等待');
     var computer = false;
+    var nextPlayer = '';
+
     switch (planeOption.currentUser) {
         case 'red':
-            planeOption.currentUser = 'blue';
+            nextPlayer = 'blue';
             break;
         case 'blue' :
-            planeOption.currentUser = 'yellow';
+            nextPlayer = 'yellow';
             break;
         case 'yellow' :
-            planeOption.currentUser = 'green';
+            nextPlayer = 'green';
             break;
         case 'green' :
-            planeOption.currentUser = 'red';
+            nextPlayer = 'red';
             break;
     }
+
+    // If in online mode, notify the server about the turn change
+    if (planeOption.isOnlineMode && currentRoom) {
+        nextTurn(nextPlayer);
+        return;
+    }
+
+    planeOption.currentUser = nextPlayer;
     sixTime = 0;
     var state = userState(planeOption.currentUser);
     if (state == 'computer') {
@@ -368,11 +445,23 @@ function nextUser() {
         $j('.shade').hide();
     }
     $j("#sdn" + planeOption.currentUser).text('请投骰');
-    addDiceEvent();
-    if (computer) {
-        setTimeout(function () {
-            $j("#dice").click();
-        }, 1500);
+
+    // In online mode, only enable dice if it's the current player's turn
+    if (planeOption.isOnlineMode) {
+        if (playerColor === planeOption.currentUser) {
+            isMyTurn = true;
+            addDiceEvent();
+        } else {
+            isMyTurn = false;
+            $j("#dice").unbind('click').removeClass('pointer');
+        }
+    } else {
+        addDiceEvent();
+        if (computer) {
+            setTimeout(function () {
+                $j("#dice").click();
+            }, 1500);
+        }
     }
 }
 
@@ -421,10 +510,19 @@ $j(function () {
         active: 0,
         delay: 500
     });
+
+    // Initialize dice event for single player mode
     addDiceEvent();
+
+    // Start button for single player mode
     $j('#begin').click(function () {
         planeOption.begin();
     });
+
+    // Initialize socket connection for multiplayer mode
+    if (typeof initializeSocket === 'function') {
+        initializeSocket();
+    }
     planeOption.tabStyle('#redUser li');
     planeOption.tabStyle('#blueUser li');
     planeOption.tabStyle('#yellowUser li');
