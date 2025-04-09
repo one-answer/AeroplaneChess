@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>SVG to PNG Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .preview {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .preview-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #3a56d4;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>飞行棋图标 PNG 转换器</h1>
+    <div class="container">
+        <div class="preview">
+            <div class="preview-item">
+                <h3>明亮模式图标</h3>
+                <img id="lightSvg" src="img/favicon.svg" width="128" height="128">
+                <canvas id="lightCanvas" width="128" height="128"></canvas>
+                <button onclick="convertToPng('lightSvg', 'lightCanvas', 'lightDownload', 128)">转换为 PNG</button>
+                <a id="lightDownload" download="favicon-light.png" href="#">下载 PNG</a>
+            </div>
+            
+            <div class="preview-item">
+                <h3>暗黑模式图标</h3>
+                <img id="darkSvg" src="img/favicon-dark.svg" width="128" height="128">
+                <canvas id="darkCanvas" width="128" height="128"></canvas>
+                <button onclick="convertToPng('darkSvg', 'darkCanvas', 'darkDownload', 128)">转换为 PNG</button>
+                <a id="darkDownload" download="favicon-dark.png" href="#">下载 PNG</a>
+            </div>
+        </div>
+        
+        <h2>其他尺寸</h2>
+        <div class="preview">
+            <div class="preview-item">
+                <h3>16x16</h3>
+                <canvas id="favicon16" width="16" height="16"></canvas>
+                <button onclick="convertToPng('lightSvg', 'favicon16', 'download16', 16)">转换为 PNG</button>
+                <a id="download16" download="favicon-16x16.png" href="#">下载 PNG</a>
+            </div>
+            
+            <div class="preview-item">
+                <h3>32x32</h3>
+                <canvas id="favicon32" width="32" height="32"></canvas>
+                <button onclick="convertToPng('lightSvg', 'favicon32', 'download32', 32)">转换为 PNG</button>
+                <a id="download32" download="favicon-32x32.png" href="#">下载 PNG</a>
+            </div>
+            
+            <div class="preview-item">
+                <h3>48x48</h3>
+                <canvas id="favicon48" width="48" height="48"></canvas>
+                <button onclick="convertToPng('lightSvg', 'favicon48', 'download48', 48)">转换为 PNG</button>
+                <a id="download48" download="favicon-48x48.png" href="#">下载 PNG</a>
+            </div>
+            
+            <div class="preview-item">
+                <h3>64x64</h3>
+                <canvas id="favicon64" width="64" height="64"></canvas>
+                <button onclick="convertToPng('lightSvg', 'favicon64', 'download64', 64)">转换为 PNG</button>
+                <a id="download64" download="favicon-64x64.png" href="#">下载 PNG</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function convertToPng(svgId, canvasId, downloadId, size) {
+            const svg = document.getElementById(svgId);
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const download = document.getElementById(downloadId);
+            
+            // 创建一个新的Image对象
+            const img = new Image();
+            
+            // 当图像加载完成后，将其绘制到canvas上
+            img.onload = function() {
+                // 清除canvas
+                ctx.clearRect(0, 0, size, size);
+                
+                // 绘制图像
+                ctx.drawImage(img, 0, 0, size, size);
+                
+                // 将canvas内容转换为PNG数据URL
+                const dataUrl = canvas.toDataURL('image/png');
+                
+                // 设置下载链接
+                download.href = dataUrl;
+                download.style.display = 'inline';
+            };
+            
+            // 设置图像源
+            img.src = svg.src;
+        }
+    </script>
+</body>
+</html>
