@@ -4,33 +4,48 @@
   --primary-color: #4361ee;
   --primary-light: #4895ef;
   --primary-dark: #3f37c9;
-  
+
   /* 玩家颜色 - 更鲜艳现代的色调 */
   --player-red: #ff4d6d;
   --player-blue: #4cc9f0;
   --player-yellow: #ffd166;
   --player-green: #06d6a0;
-  
-  /* 中性色 */
+
+  /* 明亮主题 (默认) */
   --bg-color: #f8f9fa;
   --card-bg: #ffffff;
   --text-primary: #212529;
   --text-secondary: #6c757d;
   --border-color: #dee2e6;
-  
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --header-bg: #ffffff;
+  --btn-text: #212529;
+
   /* 功能色 */
   --success: #38b000;
   --warning: #ffd166;
   --error: #ef476f;
   --info: #4cc9f0;
-  
+
   /* 尺寸 */
   --border-radius: 12px;
   --border-radius-sm: 8px;
-  --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  
+  --box-shadow: 0 4px 20px var(--shadow-color);
+
   /* 字体 */
   --font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* 暗黑主题 */
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --card-bg: #1e1e1e;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --border-color: #333333;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --header-bg: #1e1e1e;
+  --btn-text: #ffffff;
 }
 
 /* 全局样式 */
@@ -41,6 +56,7 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* 容器样式 */
@@ -333,33 +349,72 @@ h3 {
   backdrop-filter: blur(4px);
 }
 
-/* 语言选择器 */
-.language-selector {
+/* 顶部控制栏 */
+.top-controls {
   position: fixed;
   top: 20px;
   right: 20px;
   z-index: 1000;
   display: flex;
+  gap: 12px;
+  background-color: var(--header-bg);
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+/* 语言选择器 */
+.language-selector {
+  display: flex;
   gap: 8px;
 }
 
 .language-btn {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
+  background-color: var(--primary-light);
+  color: white;
+  border: none;
   border-radius: var(--border-radius-sm);
   padding: 8px 12px;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s ease;
+  opacity: 0.7;
 }
 
 .language-btn:hover {
-  background-color: var(--primary-light);
-  color: white;
+  opacity: 0.9;
 }
 
 .language-btn.active {
   background-color: var(--primary-color);
+  opacity: 1;
+}
+
+/* 主题切换按钮 */
+.theme-toggle {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background-color: var(--primary-light);
+  color: white;
+}
+
+.theme-toggle i {
+  font-size: 20px;
+  color: var(--text-primary);
+}
+
+.theme-toggle:hover i {
   color: white;
 }
 
@@ -368,30 +423,30 @@ h3 {
   .lobby-container, .waiting-container {
     flex-direction: column;
   }
-  
+
   .player-info, .room-list-container {
     width: 100%;
   }
-  
+
   .room-controls {
     flex-direction: column;
     align-items: stretch;
   }
-  
+
   .room-controls input, .room-controls button {
     width: 100%;
     margin-bottom: 8px;
   }
-  
+
   .main {
     transform: scale(0.9);
     transform-origin: top center;
   }
-  
+
   h1 {
     font-size: 2rem;
   }
-  
+
   h2 {
     font-size: 1.5rem;
   }
