@@ -105,6 +105,10 @@ function onComplete($el, active) {
  */
 function addPlaneEvent(state) {
     var flag = false;
+
+    // 移除所有飞机的可移动样式
+    $j('.plane').removeClass('movable pointer').unbind('click');
+
     $j('.plane').each(function () {
         var currentUserPlane = ($j(this).attr('type') == planeOption.currentUser ? $j(this) : undefined);
         if (currentUserPlane) {
@@ -113,19 +117,30 @@ function addPlaneEvent(state) {
                 if ($j(this).attr('state') != 'win') {
                     currentUserPlane.click(function () {
                         movePlane(this);
-                    }).addClass('pointer');
+                    }).addClass('pointer movable');
                     flag = true;
                 }
             } else {
                 if ($j(this).attr('state') == 'ready' || $j(this).attr('state') == 'running') {
                     currentUserPlane.click(function () {
                         movePlane(this);
-                    }).addClass('pointer');
+                    }).addClass('pointer movable');
                     flag = true;
                 }
             }
         }
     });
+
+    // 如果路径可视化器存在，高亮当前玩家路径
+    if (window.PathVisualizer && flag) {
+        PathVisualizer.highlightCurrentPlayerPath();
+
+        // 高亮每个可移动飞机的可能移动位置
+        $j('.plane.movable').each(function() {
+            PathVisualizer.highlightPossibleMoves(this, diceNum);
+        });
+    }
+
     if (!flag) {
         setTimeout(nextUser(), 1000);
     } else if (state == 'computer') {  //电脑执行

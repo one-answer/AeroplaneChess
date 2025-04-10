@@ -1,0 +1,192 @@
+/**
+ * 飞行棋路径增强样式
+ * 这个文件包含增强飞机路径可见性的样式
+ */
+
+/* 路径标记 - 在棋盘上添加明显的路径标记 */
+.path-marker {
+    position: absolute;
+    width: 24px; /* 减小尺寸 */
+    height: 24px; /* 减小尺寸 */
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.15); /* 降低不透明度 */
+    border: 1px dashed rgba(255, 255, 255, 0.4); /* 减小边框宽度和不透明度 */
+    z-index: 5; /* 降低 z-index 确保不会覆盖棋盘元素 */
+    pointer-events: none; /* 确保不会干扰点击事件 */
+    transition: all 0.3s ease;
+    transform: translate(-50%, -50%); /* 使标记以中心点定位 */
+}
+
+/* 不同颜色玩家的路径标记 */
+.path-marker.red {
+    border-color: rgba(255, 77, 109, 0.5); /* 降低不透明度 */
+    background-color: rgba(255, 77, 109, 0.08); /* 降低不透明度 */
+}
+
+.path-marker.blue {
+    border-color: rgba(76, 201, 240, 0.5); /* 降低不透明度 */
+    background-color: rgba(76, 201, 240, 0.08); /* 降低不透明度 */
+}
+
+.path-marker.yellow {
+    border-color: rgba(255, 209, 102, 0.5); /* 降低不透明度 */
+    background-color: rgba(255, 209, 102, 0.08); /* 降低不透明度 */
+}
+
+.path-marker.green {
+    border-color: rgba(6, 214, 160, 0.5); /* 降低不透明度 */
+    background-color: rgba(6, 214, 160, 0.08); /* 降低不透明度 */
+}
+
+/* 当前玩家的路径标记高亮 */
+.path-marker.current {
+    transform: translate(-50%, -50%) scale(1.1); /* 保持中心定位的同时放大 */
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); /* 减小阴影 */
+    z-index: 6; /* 稍微提高层级，但不要太高 */
+}
+
+.path-marker.red.current {
+    border-color: rgba(255, 77, 109, 0.7); /* 降低不透明度 */
+    background-color: rgba(255, 77, 109, 0.15); /* 降低不透明度 */
+    box-shadow: 0 0 5px rgba(255, 77, 109, 0.4); /* 减小阴影 */
+}
+
+.path-marker.blue.current {
+    border-color: rgba(76, 201, 240, 0.7); /* 降低不透明度 */
+    background-color: rgba(76, 201, 240, 0.15); /* 降低不透明度 */
+    box-shadow: 0 0 5px rgba(76, 201, 240, 0.4); /* 减小阴影 */
+}
+
+.path-marker.yellow.current {
+    border-color: rgba(255, 209, 102, 0.7); /* 降低不透明度 */
+    background-color: rgba(255, 209, 102, 0.15); /* 降低不透明度 */
+    box-shadow: 0 0 5px rgba(255, 209, 102, 0.4); /* 减小阴影 */
+}
+
+.path-marker.green.current {
+    border-color: rgba(6, 214, 160, 0.7); /* 降低不透明度 */
+    background-color: rgba(6, 214, 160, 0.15); /* 降低不透明度 */
+    box-shadow: 0 0 5px rgba(6, 214, 160, 0.4); /* 减小阴影 */
+}
+
+/* 飞机样式增强 */
+.plane {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.plane[type="red"] {
+    box-shadow: 0 0 15px rgba(255, 77, 109, 0.7);
+    border: 2px solid rgba(255, 77, 109, 1);
+}
+
+.plane[type="blue"] {
+    box-shadow: 0 0 15px rgba(76, 201, 240, 0.7);
+    border: 2px solid rgba(76, 201, 240, 1);
+}
+
+.plane[type="yellow"] {
+    box-shadow: 0 0 15px rgba(255, 209, 102, 0.7);
+    border: 2px solid rgba(255, 209, 102, 1);
+}
+
+.plane[type="green"] {
+    box-shadow: 0 0 15px rgba(6, 214, 160, 0.7);
+    border: 2px solid rgba(6, 214, 160, 1);
+}
+
+/* 当前可移动的飞机高亮 */
+.plane.movable {
+    animation: pulse 1.5s infinite;
+    cursor: pointer;
+    z-index: 100;
+}
+
+/* 路径连接线 */
+.path-line {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.1); /* 降低不透明度 */
+    height: 2px; /* 减小高度 */
+    transform-origin: left center;
+    z-index: 4; /* 降低 z-index 确保在标记下面 */
+    pointer-events: none;
+}
+
+.path-line.red {
+    background-color: rgba(255, 77, 109, 0.15); /* 降低不透明度 */
+}
+
+.path-line.blue {
+    background-color: rgba(76, 201, 240, 0.15); /* 降低不透明度 */
+}
+
+.path-line.yellow {
+    background-color: rgba(255, 209, 102, 0.15); /* 降低不透明度 */
+}
+
+.path-line.green {
+    background-color: rgba(6, 214, 160, 0.15); /* 降低不透明度 */
+}
+
+/* 路径指示器控制面板 */
+.path-controls {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(255, 255, 255, 0.6); /* 降低不透明度 */
+    padding: 8px; /* 减小内边距 */
+    border-radius: 8px;
+    z-index: 50; /* 降低 z-index */
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* 减小间距 */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* 减小阴影 */
+    font-size: 12px; /* 减小字体 */
+    opacity: 0.8; /* 添加透明度 */
+    transition: opacity 0.3s ease;
+}
+
+.path-controls:hover {
+    opacity: 1; /* 悬停时显示完全不透明 */
+}
+
+[data-theme="dark"] .path-controls {
+    background-color: rgba(30, 30, 30, 0.6); /* 降低不透明度 */
+    color: white;
+}
+
+.path-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.path-toggle input {
+    margin: 0;
+}
+
+/* 暗黑模式适配 */
+[data-theme="dark"] .path-marker {
+    background-color: rgba(50, 50, 50, 0.3);
+    border-color: rgba(200, 200, 200, 0.5);
+}
+
+[data-theme="dark"] .path-line {
+    background-color: rgba(200, 200, 200, 0.3);
+}
+
+/* 脉冲动画 */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

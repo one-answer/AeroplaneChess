@@ -72,6 +72,12 @@ const translations = {
     lightTheme: '明亮主题',
     darkTheme: '暗黑主题',
 
+    // 路径可视化
+    showPath: '显示路径',
+    showPathMarkers: '显示路径点',
+    showPathLines: '显示连接线',
+    showCurrentPlayerOnly: '仅显示当前玩家',
+
     // 确认框
     confirmLeave: '确定要离开房间吗？',
     confirmRefresh: '确定要刷新页面吗？刷新后页面数据将被清除！',
@@ -140,6 +146,12 @@ const translations = {
     toggleThemeTip: 'Toggle theme',
     lightTheme: 'Light theme',
     darkTheme: 'Dark theme',
+
+    // Path Visualization
+    showPath: 'Show Path',
+    showPathMarkers: 'Show Path Markers',
+    showPathLines: 'Show Connection Lines',
+    showCurrentPlayerOnly: 'Show Current Player Only',
 
     // Confirmation
     confirmLeave: 'Are you sure you want to leave the room?',
